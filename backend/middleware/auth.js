@@ -13,7 +13,7 @@ const protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || "jobportal_secret_key_2026_super_secure"
+        process.env.JWT_SECRET || "JOBS@RSR_secret_key_2026_super_secure"
       );
       req.user = await User.findById(decoded.id).select("-password");
       if (!req.user) {

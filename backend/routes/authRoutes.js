@@ -9,7 +9,7 @@ const router = express.Router();
 const generateToken = (id) => {
   return jwt.sign(
     { id },
-    process.env.JWT_SECRET || "jobportal_secret_key_2026_super_secure",
+    process.env.JWT_SECRET || "JOBS@RSR_secret_key_2026_super_secure",
     { expiresIn: "30d" }
   );
 };
