@@ -4,7 +4,7 @@ let mongoServer;
 
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/JOBS@RSR";
+    const mongoUri = process.env.MONGO_URI || "mongodb+srv://mohammedfatha04_db_user:QE7Fi9fcWwt48IoJ@cluster0.hkgkqdv.mongodb.net/";
 
     try {
       const conn = await mongoose.connect(mongoUri, {
