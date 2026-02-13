@@ -119,7 +119,7 @@ const Profile = () => {
             <div className="profile-avatar-wrapper">
               {user.profileImage ? (
                 <img
-                  src={`http://localhost:5000/${user.profileImage}`}
+                  src={`https://jobs-rsr.onrender.com/${user.profileImage}`}
                   alt="Profile"
                   className="profile-avatar"
                 />
@@ -148,7 +148,7 @@ const Profile = () => {
               {user.resume ? (
                 <div className="resume-info">
                   <a
-                    href={`http://localhost:5000/${user.resume}`}
+                    href={`https://jobs-rsr.onrender.com/${user.resume}`}
                     target="_blank"
                     rel="noreferrer"
                     className="btn btn-sm btn-secondary"

@@ -112,7 +112,7 @@ const ViewApplications = () => {
                   <td>
                     {app.resume ? (
                       <a
-                        href={`http://localhost:5000/${app.resume}`}
+                        href={`https://jobs-rsr.onrender.com/${app.resume}`}
                         target="_blank"
                         rel="noreferrer"
                         className="btn btn-sm btn-secondary"
