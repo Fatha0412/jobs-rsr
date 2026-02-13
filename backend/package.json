@@ -1,5 +1,5 @@
 {
-  "name": "JOBS@RSR-backend",
+  "name": "jobs-rsr-backend",
   "version": "1.0.0",
   "description": "MERN Job Portal Backend API",
   "main": "server.js",
