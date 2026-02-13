@@ -67,7 +67,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
           <FaBriefcase className="brand-icon" />
-          <span>JobPortal</span>
+          <span>JOBS@RSR</span>
         </Link>
 
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>

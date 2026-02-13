@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 // Add token from localStorage on init
-const storedUser = localStorage.getItem("jobportal_user");
+const storedUser = localStorage.getItem("JOBS@RSR_user");
 if (storedUser) {
   const { token } = JSON.parse(storedUser);
   if (token) {
@@ -21,7 +21,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("jobportal_user");
+      localStorage.removeItem("JOBS@RSR_user");
       if (window.location.pathname !== "/login") {
         window.location.href = "/login";
       }

@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("jobportal_user");
+    const storedUser = localStorage.getItem("JOBS@RSR_user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     const res = await api.post("/auth/login", { email, password });
     const userData = res.data;
     setUser(userData);
-    localStorage.setItem("jobportal_user", JSON.stringify(userData));
+    localStorage.setItem("JOBS@RSR_user", JSON.stringify(userData));
     api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
     return userData;
   };
@@ -32,21 +32,21 @@ export const AuthProvider = ({ children }) => {
     const res = await api.post("/auth/register", formData);
     const userData = res.data;
     setUser(userData);
-    localStorage.setItem("jobportal_user", JSON.stringify(userData));
+    localStorage.setItem("JOBS@RSR_user", JSON.stringify(userData));
     api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
     return userData;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("jobportal_user");
+    localStorage.removeItem("JOBS@RSR_user");
     delete api.defaults.headers.common["Authorization"];
   };
 
   const updateUser = (updatedData) => {
     const newUser = { ...user, ...updatedData };
     setUser(newUser);
-    localStorage.setItem("jobportal_user", JSON.stringify(newUser));
+    localStorage.setItem("JOBS@RSR_user", JSON.stringify(newUser));
   };
 
   return (

@@ -152,9 +152,9 @@ const Home = () => {
           <div className="footer-content">
             <div className="footer-brand">
               <FaBriefcase />
-              <span>JobPortal</span>
+              <span>JOBS@RSR</span>
             </div>
-            <p>&copy; 2026 JobPortal. Built with MERN Stack.</p>
+            <p>&copy; 2026 JOBS@RSR. Built with MERN Stack.</p>
           </div>
         </div>
       </footer>

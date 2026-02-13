@@ -95,9 +95,9 @@ const Login = () => {
           <div className="demo-credentials">
             <h4>Demo Credentials</h4>
             <div className="demo-grid">
-              <div className="demo-item" onClick={() => { setEmail("admin@jobportal.com"); setPassword("admin123"); }}>
+              <div className="demo-item" onClick={() => { setEmail("admin@JOBS@RSR.com"); setPassword("admin123"); }}>
                 <span className="demo-role admin">Admin</span>
-                <small>admin@jobportal.com</small>
+                <small>admin@JOBS@RSR.com</small>
               </div>
               <div className="demo-item" onClick={() => { setEmail("hr@techcorp.com"); setPassword("hr1234"); }}>
                 <span className="demo-role hr">HR</span>
