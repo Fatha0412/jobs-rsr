@@ -4,29 +4,13 @@ let mongoServer;
 
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || "mongodb+srv://mohammedfatha04_db_user:fatha0412@cluster0.hkgkqdv.mongodb.net/";
+    const mongoUri = process.env.MONGO_URI || "mongodb+srv://mohammedfatha04_db_user:fatha0412@cluster0.hkgkqdv.mongodb.net/jobsrsr";
 
-    try {
-      const conn = await mongoose.connect(mongoUri, {
-        serverSelectionTimeoutMS: 3000,
-      });
-      console.log(`MongoDB Connected: ${conn.connection.host}`);
-      return;
-    } catch (err) {
-      console.log("Local/Atlas MongoDB not available, starting in-memory MongoDB...");
-    }
-
-    // Fallback to in-memory MongoDB
-    const { MongoMemoryServer } = require("mongodb-memory-server");
-    mongoServer = await MongoMemoryServer.create();
-    const memoryUri = mongoServer.getUri();
-
-    const conn = await mongoose.connect(memoryUri);
-    console.log(`MongoDB In-Memory Connected: ${conn.connection.host}`);
-    console.log("NOTE: Data will be lost when server restarts (in-memory mode)");
-
-    // Auto-seed when using in-memory
-    await seedData();
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 3000,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    // If connection fails, error will be caught below and process will exit
   } catch (error) {
     console.error(`MongoDB Connection Error: ${error.message}`);
     process.exit(1);
