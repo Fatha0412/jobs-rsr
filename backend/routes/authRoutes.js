@@ -16,6 +16,7 @@ const generateToken = (id) => {
 
 // POST /api/auth/register
 router.post("/register", async (req, res) => {
+  console.log('Request received at:', new Date().toISOString());
   try {
     const { name, email, password, role, phone, company, designation } = req.body;
 
@@ -57,6 +58,7 @@ router.post("/register", async (req, res) => {
 
 // POST /api/auth/login
 router.post("/login", async (req, res) => {
+  console.log('Request received at:', new Date().toISOString());
   try {
     const { email, password } = req.body;
 

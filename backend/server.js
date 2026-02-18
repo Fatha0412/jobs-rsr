@@ -4,15 +4,19 @@ const path = require("path");
 const fs = require("fs");
 const connectDB = require("./config/db");
 
-// 1. GLOBAL CORS - Place this BEFORE any routes
 const app = express();
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+// 1. Simplest CORS: allow all origins
+app.use(cors());
 
-// 2. BODY PARSER - Required to read the data you send
+// 2. Manual headers for CORS (force allow all)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
+// 3. Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
