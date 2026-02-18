@@ -1,47 +1,54 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import User from '../../backend/models/User';
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://mohammedfatha04_db_user:QE7Fi9fcWwt48IoJ@cluster0.hkgkqdv.mongodb.net/";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  if (!mongoose.connection.readyState) {
-    await mongoose.connect(MONGO_URI);
-  }
-
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("Login successful!");
+        navigate("/dashboard");
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      alert("Login failed. Please try again later.");
+    } finally {
+      setLoading(false);
     }
-    if (!user.isActive) {
-      return res.status(403).json({ message: 'Your account has been deactivated' });
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      phone: user.phone,
-      resume: user.resume,
-      skills: user.skills,
-      education: user.education,
-      experience: user.experience,
-      bio: user.bio,
-      profileImage: user.profileImage,
-      company: user.company,
-      designation: user.designation,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-}
+  };
+
+  return (
+    <div style={{ maxWidth: 400, margin: "40px auto", padding: 24, border: "1px solid #eee", borderRadius: 8 }}>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: 12 }}>
+          <label>Email:</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ width: "100%" }} />
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <label>Password:</label>
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: "100%" }} />
+        </div>
+        <button type="submit" disabled={loading} style={{ width: "100%", padding: 10 }}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Login;

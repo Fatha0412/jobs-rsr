@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -7,6 +9,7 @@ import "../styles/shared.css";
 import "./Auth.css";
 
 const Register = () => {
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,8 +30,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword, role } = formData;
-
+    const { name, email, password, confirmPassword } = formData;
     if (!name || !email || !password) {
       toast.error("Please fill in all required fields");
       return;
@@ -41,19 +43,27 @@ const Register = () => {
       toast.error("Password must be at least 6 characters");
       return;
     }
-
     setLoading(true);
     try {
-      const user = await register(formData);
-      toast.success(`Welcome, ${user.name}! Account created successfully.`);
-      switch (user.role) {
-        case "admin": navigate("/admin/dashboard"); break;
-        case "hr": navigate("/hr/dashboard"); break;
-        case "student": navigate("/student/dashboard"); break;
-        default: navigate("/");
+      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const user = await response.json();
+      if (user && user.name) {
+        toast.success(`Welcome, ${user.name}! Account created successfully.`);
+        switch (user.role) {
+          case "admin": navigate("/admin/dashboard"); break;
+          case "hr": navigate("/hr/dashboard"); break;
+          case "student": navigate("/student/dashboard"); break;
+          default: navigate("/");
+        }
+      } else {
+        toast.error(user?.message || "Registration failed");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration failed");
+      toast.error(error.response?.data?.message || error.message || "Registration failed");
     } finally {
       setLoading(false);
     }
