@@ -45,12 +45,7 @@ const Register = () => {
     }
     setLoading(true);
     try {
-      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const user = await response.json();
+      const user = await register(formData);
       if (user && user.name) {
         toast.success(`Welcome, ${user.name}! Account created successfully.`);
         switch (user.role) {
