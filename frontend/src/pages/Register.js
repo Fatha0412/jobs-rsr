@@ -45,20 +45,24 @@ const Register = () => {
     }
     setLoading(true);
     try {
-      const user = await register(formData);
-      if (user && user.name) {
-        toast.success(`Welcome, ${user.name}! Account created successfully.`);
-        switch (user.role) {
-          case "admin": navigate("/admin/dashboard"); break;
-          case "hr": navigate("/hr/dashboard"); break;
-          case "student": navigate("/student/dashboard"); break;
-          default: navigate("/");
-        }
+      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Registration Success!");
+        localStorage.setItem("token", data.token);
+        window.location.href = "/";
       } else {
-        toast.error(user?.message || "Registration failed");
+        toast.error("Registration Failed: " + (data.message || "Check your details"));
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "Registration failed");
+      console.error("Fetch error:", error);
+      toast.error("Network Error: Backend is blocking the browser or URL is wrong.");
     } finally {
       setLoading(false);
     }

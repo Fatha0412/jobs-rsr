@@ -22,16 +22,24 @@ const Login = () => {
     }
     setLoading(true);
     try {
-      const user = await login(email, password);
-      toast.success(`Welcome back, ${user.name}!`);
-      switch (user.role) {
-        case "admin": navigate("/admin/dashboard"); break;
-        case "hr": navigate("/hr/dashboard"); break;
-        case "student": navigate("/student/dashboard"); break;
-        default: navigate("/");
+      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Success!");
+        localStorage.setItem("token", data.token);
+        window.location.href = "/";
+      } else {
+        toast.error("Login Failed: " + (data.message || "Check credentials"));
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      console.error("Fetch error:", error);
+      toast.error("Network Error: Backend is blocking the browser or URL is wrong.");
     } finally {
       setLoading(false);
     }
