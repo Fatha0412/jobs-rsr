@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import User from '../../backend/models/User';
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://fatha_rsr:fatha0412@cluster0.ai3sdjl.mongodb.net/";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://mohammedfatha04_db_user:QE7Fi9fcWwt48IoJ@cluster0.hkgkqdv.mongodb.net/";
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
