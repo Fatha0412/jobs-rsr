@@ -1,45 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-const fs = require("fs");
-const connectDB = require("./config/db");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
-// 1. Simplest CORS: allow all origins
-app.use(cors());
 
-// 2. Manual headers for CORS (force allow all)
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
-
-// 3. Body parser
+// CRITICAL STEP (Middleware Order):
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.options('*', cors());
 
-// Load env vars
-try {
-  require("dotenv").config();
-} catch (e) {
-  // dotenv not available, use defaults
-}
-
-// Connect to MongoDB
-connectDB();
-
-// Create upload directories
-const dirs = ["uploads", "uploads/resumes", "uploads/profiles"];
-dirs.forEach((dir) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
-
-// Serve uploaded files statically
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Connect to MongoDB using process.env.MONGO_URI
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -58,17 +38,7 @@ app.get("/", (req, res) => {
   res.send("<h2>Welcome to the Job Portal API Backend!<br>API is running.</h2>");
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  if (err.name === "MulterError") {
-    return res.status(400).json({ message: `Upload error: ${err.message}` });
-  }
-  res.status(500).json({ message: err.message || "Internal Server Error" });
-});
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`API: http://localhost:${PORT}/api/health`);
 });
