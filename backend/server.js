@@ -25,7 +25,13 @@ dirs.forEach((dir) => {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://frontend-p36zrvso5-mohammed-fathas-projects.vercel.app",
+    "http://localhost:3000"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
