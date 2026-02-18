@@ -4,14 +4,24 @@ const path = require("path");
 const fs = require("fs");
 const connectDB = require("./config/db");
 
+// 1. GLOBAL CORS - Place this BEFORE any routes
+const app = express();
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
+// 2. BODY PARSER - Required to read the data you send
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Load env vars
 try {
   require("dotenv").config();
 } catch (e) {
   // dotenv not available, use defaults
 }
-
-const app = express();
 
 // Connect to MongoDB
 connectDB();
@@ -23,17 +33,6 @@ dirs.forEach((dir) => {
     fs.mkdirSync(dir, { recursive: true });
   }
 });
-
-// Middleware
-app.use(cors({
-  origin: [
-    "https://frontend-p36zrvso5-mohammed-fathas-projects.vercel.app",
-    "http://localhost:3000"
-  ],
-  credentials: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
