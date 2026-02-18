@@ -44,6 +44,11 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "Job Portal API is running" });
 });
 
+// Root route for Render base URL
+app.get("/", (req, res) => {
+  res.send("<h2>Welcome to the Job Portal API Backend!<br>API is running.</h2>");
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
