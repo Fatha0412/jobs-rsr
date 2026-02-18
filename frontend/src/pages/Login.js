@@ -23,97 +23,55 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Login Success!");
-        localStorage.setItem("token", data.token);
-        window.location.href = "/";
-      } else {
-        alert("Login Failed: " + (data.message || "Check credentials"));
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
-      alert("Network Error: Backend is blocking the browser or URL is wrong.");
-    }
-  };
+      import React, { useState } from 'react';
 
-  return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-card">
-          <div className="auth-header">
-            <FaBriefcase className="auth-logo" />
-            <h1>Welcome Back</h1>
-            <p>Sign in to your account</p>
-          </div>
+      const Login = () => {
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
 
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-group">
-              <label>Email Address</label>
-              <div className="input-icon">
-                <FaEnvelope className="icon" />
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          console.log('Form submitted, preventing reload...');
+          try {
+            const response = await fetch("https://jobs-rsr-backend.onrender.com/api/v1/auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+              localStorage.setItem("token", data.token);
+              alert("Login Success!");
+              window.location.href = "/";
+            } else {
+              alert("Login Failed: " + data.message);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Network Error: Backend not reachable.");
+          }
+        };
 
-            <div className="form-group">
-              <label>Password</label>
-              <div className="input-icon">
-                <FaLock className="icon" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="form-control"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className="toggle-password"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-lg btn-block" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
-            </button>
+        return (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+            />
+            <button type="submit">Login</button>
           </form>
+        );
+      };
 
-          <div className="auth-footer">
-            <p>Don't have an account? <Link to="/register">Register here</Link></p>
-          </div>
-
-          <div className="demo-credentials">
-            <h4>Demo Credentials</h4>
-            <div className="demo-grid">
-              <div className="demo-item" onClick={() => { setEmail("admin@JOBS@RSR.com"); setPassword("admin123"); }}>
-                <span className="demo-role admin">Admin</span>
-                <small>admin@JOBS@RSR.com</small>
-              </div>
-              <div className="demo-item" onClick={() => { setEmail("hr@techcorp.com"); setPassword("hr1234"); }}>
-                <span className="demo-role hr">HR</span>
-                <small>hr@techcorp.com</small>
-              </div>
-              <div className="demo-item" onClick={() => { setEmail("amit@student.com"); setPassword("student123"); }}>
-                <span className="demo-role student">Student</span>
-                <small>amit@student.com</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Login;
+      export default Login;
+                <button
