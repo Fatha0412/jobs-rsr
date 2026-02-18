@@ -30,22 +30,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
-    if (!name || !email || !password) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
-      return;
-    }
-    setLoading(true);
     try {
-      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/auth/register", {
+      const response = await fetch("https://jobs-rsr-backend.onrender.com/api/v1/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,17 +40,15 @@ const Register = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        toast.success("Registration Success!");
+        alert("Registration Success!");
         localStorage.setItem("token", data.token);
         window.location.href = "/";
       } else {
-        toast.error("Registration Failed: " + (data.message || "Check your details"));
+        alert("Registration Failed: " + (data.message || "Check your details"));
       }
     } catch (error) {
       console.error("Fetch error:", error);
-      toast.error("Network Error: Backend is blocking the browser or URL is wrong.");
-    } finally {
-      setLoading(false);
+      alert("Network Error: Backend is blocking the browser or URL is wrong.");
     }
   };
 
