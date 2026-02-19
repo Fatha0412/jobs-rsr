@@ -55,7 +55,7 @@ const Login = () => {
         };
 
         return (
-          <form onSubmit={handleSubmit}>
+          <form>
             <input
               type="email"
               value={email}
@@ -68,7 +68,13 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
             />
-            <button type="submit">Login</button>
+            <button 
+              type="button" 
+              onClick={handleSubmit}
+              className="btn btn-primary btn-lg btn-block"
+            >
+              Login (Test Mode)
+            </button>
           </form>
         );
       };
