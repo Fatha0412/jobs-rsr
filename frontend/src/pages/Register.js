@@ -30,7 +30,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted, preventing reload...');
+    setLoading(true);
     try {
       const response = await fetch("https://jobs-rsr-backend.onrender.com/api/v1/auth/register", {
         method: "POST",
@@ -50,6 +50,8 @@ const Register = () => {
     } catch (error) {
       console.error("Error:", error);
       alert("Network Error: Backend not reachable.");
+    } finally {
+      setLoading(false);
     }
   };
 
